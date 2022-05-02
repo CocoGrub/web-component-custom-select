@@ -56,8 +56,20 @@
   background-color: #f3f5f6;
 }
 
-.selected {
+
+.action-button {
+  display: none;
+  content: "";
+  z-index: 14;
+  position: absolute;
+  width: 10%;
+  height: 100%;
+  right: 0;
   background-image: url("./icon.svg");
   background-position: calc(100% - 20px) 50%;
   background-repeat: no-repeat;
+}
+.action-button:hover{
+  background-image: url("./icon-close.svg");
+  transition: ease-in 0.2s;
 }

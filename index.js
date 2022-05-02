@@ -4,16 +4,16 @@ const selectAll = document.querySelectorAll.bind(document)
 const input = select('input')
 const inputWidth = input.offsetWidth;
 const label = select('label')
-
+const labelInitialStyles = label.style;
+const actionButton = select('.action-button')
 
 const valuesContainer = select('.select-values')
 const itemsContainer = select('.list-container')
 
 
-itemsContainer.style.width = inputWidth-23 + 'px'
+itemsContainer.style.width = inputWidth - 23 + 'px'
 
 document.body.addEventListener('click', (e) => {
-    console.log(e);
     if (!e.target.classList.contains('input-select'))
         valuesContainer.style = "display:none"
 })
@@ -27,13 +27,17 @@ input.addEventListener('click', () => {
 
 const values = selectAll('li')
 
+
 values.forEach(element => {
-    console.log(inputWidth);
     element.addEventListener('click', () => {
         input.value = element.innerText
         valuesContainer.style = "display:none"
-        input.classList.add('selected')
-
+        actionButton.style.display="block"
     })
-
 });
+
+actionButton.addEventListener('click',()=>{
+    input.value='';
+    actionButton.style.display="none"
+    label.style=labelInitialStyles;
+})
