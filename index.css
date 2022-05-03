@@ -41,27 +41,33 @@
   box-shadow: 0px 0px 10px 6px #f3f5f6;
   transition: ease-in 0.2s;
 }
-.select-values ul {
+.select-values-wrapper {
   list-style-type: none;
   padding: 0;
   margin: 0;
   padding-left: 5px;
 }
-.select-values li {
+
+.select-values {
+  width: 100%;
+}
+.select-values-items {
+  padding: 5px;
   cursor: pointer;
   min-height: 30px;
   line-height: 45px;
 }
 
-.select-values li:hover {
+.select-values-items:hover {
   background-color: #f3f5f6;
 }
 
 .action-button {
   content: "";
+  min-width: 55px;
+  max-width: 10%;
   z-index: 14;
   position: absolute;
-  width: 10%;
   height: 100%;
   right: 0;
   background-position: calc(100% - 20px) 50%;

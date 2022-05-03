@@ -1,5 +1,13 @@
 class customSelectWithFloatLabel {
-    constructor() {
+    constructor(labelText,placeholder,arr = ['one', 'two', 'three']) {
+        this.wrappedItems = arr.forEach((x) => {
+            this.el = document.createElement('div')
+            this.elWrapper = document.createElement('div')
+            this.el.innerHTML = x;
+            this.el.className = "select-values-items"
+            this.elWrapper.className = "select-values-wrapper"
+            document.querySelector('.list-container').appendChild(this.el)
+        })
         this.select = document.querySelector.bind(document)
         this.selectAll = document.querySelectorAll.bind(document)
         this.input = this.select('input')
@@ -7,10 +15,11 @@ class customSelectWithFloatLabel {
         this.actionButton = this.select('.action-button')
         this.valuesContainer = this.select('.select-values')
         this.itemsContainer = this.select('.list-container')
-        this.values = this.selectAll('li')
-        this.inputWidth = this.input.offsetWidth;
+        this.values = this.selectAll('.select-values-items')
         this.labelInitialStyles = this.label.style;
-        this.itemsContainer.style.width = this.inputWidth - 24 + 'px'
+        this.arr = arr
+        this.label.innerHTML=labelText
+        this.input.placeholder=placeholder
     }
 
     backLabelPosition = () => {
@@ -66,15 +75,19 @@ class customSelectWithFloatLabel {
         })
     }
 
-    initInstance() {
+    init() {
+        if(this.input.placeholder){
+            console.log('placeholder');
+           this.backLabelPosition()
+        }
         this.inputAddClick()
         this.valuesAddClick()
         this.actionButtonAddClick()
         this.addClick()
-        this.backLabelPosition()
+        
     }
 
 }
 
-const customSelect = new customSelectWithFloatLabel()
-customSelect.initInstance()
+const customSelect = new customSelectWithFloatLabel('Select a car','select a car bellow',['volvo', 'audi', 'mersedes', 'BMW', 'GAZ'])
+customSelect.init()
