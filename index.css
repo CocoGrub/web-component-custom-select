@@ -56,20 +56,25 @@
   background-color: #f3f5f6;
 }
 
-
 .action-button {
-  display: none;
   content: "";
   z-index: 14;
   position: absolute;
   width: 10%;
   height: 100%;
   right: 0;
-  background-image: url("./icon.svg");
   background-position: calc(100% - 20px) 50%;
   background-repeat: no-repeat;
-}
-.action-button:hover{
-  background-image: url("./icon-close.svg");
   transition: ease-in 0.2s;
+}
+.action-button[data-state="ready"] {
+  background-image: url("./icon-expand.svg");
+}
+
+.action-button[data-state="selected"] {
+  background-image: url("./icon-selected.svg");
+}
+
+.action-button[data-state="selected"]:hover {
+  background-image: url("./icon-close.svg");
 }
