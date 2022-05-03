@@ -23,33 +23,47 @@ const BackLabelPosition = () => {
 }
 
 document.body.addEventListener('click', (e) => {
-    if (!e.target.classList.contains('input-select')) {
-        valuesContainer.style = "display:none"
-        if (input.value) {
+            if (!(e.target.classList.contains('action-button') || e.target.classList.contains('input-select'))) {
+                    console.log(e.target.classList);
+                    valuesContainer.style = "display:none"
+                    if (!input.value) {
+                        label.style = labelInitialStyles
+                    }
+                }
+            })
+
+
+        const showSelectMenu = () => {
+            valuesContainer.style = 'display:block'
+            itemsContainer.width = inputWidth
             BackLabelPosition()
         }
-    }
-})
 
-input.addEventListener('click', () => {
-    valuesContainer.style = 'display:block'
-    itemsContainer.width = inputWidth
-    BackLabelPosition()
-})
+        input.addEventListener('click', () => {
+            showSelectMenu()
+        })
 
 
+        values.forEach(element => {
+            element.addEventListener('click', () => {
+                input.value = element.innerText
+                valuesContainer.style = "display:none"
+                actionButton.dataset.state = "selected"
+            })
+        });
 
-
-values.forEach(element => {
-    element.addEventListener('click', () => {
-        input.value = element.innerText
-        valuesContainer.style = "display:none"
-        actionButton.dataset.state="selected"
-    })
-});
-
-actionButton.addEventListener('click', () => {
-    input.value = '';
-    actionButton.dataset.state="ready"
-    label.style = labelInitialStyles;
-})
+        actionButton.addEventListener('click', () => {
+            if (actionButton.dataset.state === 'ready') {
+                console.log('is ready');
+                valuesContainer.style = 'display:block'
+                itemsContainer.width = inputWidth
+                input.value = '';
+                BackLabelPosition()
+                return
+            }
+            console.log('back');
+            input.value = '';
+            actionButton.dataset.state = "ready"
+            label.style = labelInitialStyles;
+            valuesContainer.style = 'display:none'
+        })
