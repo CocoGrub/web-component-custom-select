@@ -2,7 +2,6 @@ class customSelectWithFloatLabel {
     constructor(args) {
         const {
             labelText,
-          
             arr
         } = args
 
@@ -66,7 +65,6 @@ class customSelectWithFloatLabel {
             if (this.actionButton.dataset.state === 'ready') {
                 this.valuesContainer.style = 'display:block'
                 this.input.value = '';
-
                 this.backLabelPosition()
                 return
             }
@@ -79,10 +77,6 @@ class customSelectWithFloatLabel {
     }
 
     init() {
-        if (this.input.placeholder) {
-            console.log('placeholder');
-            this.backLabelPosition()
-        }
         this.inputAddClick()
         this.valuesAddClick()
         this.actionButtonAddClick()
@@ -94,7 +88,6 @@ class customSelectWithFloatLabel {
 
 const customSelect = new customSelectWithFloatLabel({
     labelText: 'Select a car',
-    placeholder: 'select a car bellow',
     arr: ['volvo', 'audi', 'mersedes', 'BMW', 'GAZ']
 })
 customSelect.init()
