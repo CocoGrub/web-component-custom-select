@@ -1,5 +1,11 @@
 class customSelectWithFloatLabel {
-    constructor(labelText,placeholder,arr = ['one', 'two', 'three']) {
+    constructor(args) {
+        const {
+            labelText,
+            placeholder,
+            arr
+        } = args
+
         this.wrappedItems = arr.forEach((x) => {
             this.el = document.createElement('div')
             this.elWrapper = document.createElement('div')
@@ -18,8 +24,8 @@ class customSelectWithFloatLabel {
         this.values = this.selectAll('.select-values-items')
         this.labelInitialStyles = this.label.style;
         this.arr = arr
-        this.label.innerHTML=labelText
-        this.input.placeholder=placeholder
+        this.label.innerHTML = labelText
+        this.input.placeholder = placeholder
     }
 
     backLabelPosition = () => {
@@ -76,18 +82,22 @@ class customSelectWithFloatLabel {
     }
 
     init() {
-        if(this.input.placeholder){
+        if (this.input.placeholder) {
             console.log('placeholder');
-           this.backLabelPosition()
+            this.backLabelPosition()
         }
         this.inputAddClick()
         this.valuesAddClick()
         this.actionButtonAddClick()
         this.addClick()
-        
+
     }
 
 }
 
-const customSelect = new customSelectWithFloatLabel('Select a car','select a car bellow',['volvo', 'audi', 'mersedes', 'BMW', 'GAZ'])
+const customSelect = new customSelectWithFloatLabel({
+    labelText: 'Select a car',
+    placeholder: 'select a car bellow',
+    arr: ['volvo', 'audi', 'mersedes', 'BMW', 'GAZ']
+})
 customSelect.init()
