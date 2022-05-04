@@ -2,7 +2,7 @@ class customSelectWithFloatLabel {
     constructor(args) {
         const {
             labelText,
-            placeholder,
+          
             arr
         } = args
 
@@ -25,7 +25,7 @@ class customSelectWithFloatLabel {
         this.labelInitialStyles = this.label.style;
         this.arr = arr
         this.label.innerHTML = labelText
-        this.input.placeholder = placeholder
+        
     }
 
     backLabelPosition = () => {
@@ -33,9 +33,6 @@ class customSelectWithFloatLabel {
         this.label.style.top = '15%';
     }
 
-    controlPlaceholder = (show) => {
-        show ? this.input.placeholder = 'placeholder' : this.input.placeholder = ''
-    }
 
     addClick() {
         document.body.addEventListener('click', (e) => {
@@ -69,7 +66,7 @@ class customSelectWithFloatLabel {
             if (this.actionButton.dataset.state === 'ready') {
                 this.valuesContainer.style = 'display:block'
                 this.input.value = '';
-                this.controlPlaceholder()
+
                 this.backLabelPosition()
                 return
             }
@@ -77,7 +74,7 @@ class customSelectWithFloatLabel {
             this.actionButton.dataset.state = "ready"
             this.label.style = this.labelInitialStyles;
             this.valuesContainer.style = 'display:none'
-            this.controlPlaceholder()
+
         })
     }
 
