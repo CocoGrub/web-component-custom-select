@@ -1,3 +1,27 @@
+const iconExpand = window.btoa(`
+<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16.5 33C25.6127 33 33 25.6127 33 16.5C33 7.3873 25.6127 0 16.5 0C7.3873 0 0 7.3873 0 16.5C0 25.6127 7.3873 33 16.5 33Z" fill="white"/>
+    <path d="M25.9711 12L16.9855 21L8 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`);
+
+const iconSelected = window.btoa(`
+<svg width="33" height="33" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="16.5" cy="16.5" r="16.5" fill="#fff" />
+    <path d="M10 17l4.979 4.438 8.922-8.922" stroke="#1DB4C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M10 17l4.979 4.438 8.922-8.922" stroke="#1DB4C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+`);
+
+const iconClean = window.btoa(`
+<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16.5 33C25.6127 33 33 25.6127 33 16.5C33 7.3873 25.6127 0 16.5 0C7.3873 0 0 7.3873 0 16.5C0 25.6127 7.3873 33 16.5 33Z" fill="white"/>
+    <path d="M7.49998 25.5L25.4711 7.5M25.4711 25.5L7.5 7.5" stroke="#C01D1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+`);
+
+
 const template = document.createElement('template')
 template.innerHTML = `
 <div class="container">
@@ -95,15 +119,15 @@ template.innerHTML = `
     transition: ease-in 0.2s;
   }
   .action-button[data-state="ready"] {
-    background-image: url("./icon-expand.svg");
+    background-image: url('data:image/svg+xml;base64,${iconExpand}');
   }
   
   .action-button[data-state="selected"] {
-    background-image: url("./icon-selected.svg");
+    background-image: url('data:image/svg+xml;base64,${iconSelected}');
   }
   
   .action-button[data-state="selected"]:hover {
-    background-image: url("./icon-close.svg");
+    background-image: url('data:image/svg+xml;base64,${iconClean}');
   }
   
 </style>
@@ -112,23 +136,22 @@ template.innerHTML = `
 
 
 class CustomSelectWithFloatLabel extends HTMLElement {
-    constructor(args) {
+    constructor() {
         super();
         this.attachShadow({
             mode: "open"
         })
         this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-        const {
-            labelText,
-            arr
-        } = {
-            labelText: 'test',
-            arr: ['1', '2', '3']
-        }
+
+        const slots = document.querySelectorAll('custom-select-with-float-label .item')
+        this.arr = []
+        slots.forEach(x => this.arr.push(x.slot))
 
 
-        this.wrappedItems = arr.forEach((x) => {
+        this.labelText = document.querySelector('custom-select-with-float-label .label').slot;
+
+        this.wrappedItems = this.arr.forEach((x) => {
             this.el = document.createElement('div')
             this.elWrapper = document.createElement('div')
             this.el.innerHTML = x;
@@ -141,11 +164,11 @@ class CustomSelectWithFloatLabel extends HTMLElement {
         this.label = this.shadowRoot.querySelector('label')
         this.actionButton = this.shadowRoot.querySelector('.action-button')
         this.valuesContainer = this.shadowRoot.querySelector('.select-values')
-        this.itemsContainer =this.shadowRoot.querySelector('.list-container')
+        this.itemsContainer = this.shadowRoot.querySelector('.list-container')
         this.values = this.shadowRoot.querySelectorAll('.select-values-items')
         this.labelInitialStyles = this.label.style;
-        this.arr = arr
-        this.label.innerHTML = labelText
+
+        this.label.innerHTML = this.labelText
 
     }
 
@@ -158,7 +181,7 @@ class CustomSelectWithFloatLabel extends HTMLElement {
 
     addClick() {
         document.addEventListener('click', (e) => {
-            if (e.target.localName!=='custom-select-with-float-label') {
+            if (e.target.localName !== 'custom-select-with-float-label') {
                 this.valuesContainer.style = "display:none"
                 if (!this.input.value) {
                     this.label.style = this.labelInitialStyles
@@ -205,14 +228,11 @@ class CustomSelectWithFloatLabel extends HTMLElement {
         this.valuesAddClick()
         this.actionButtonAddClick()
         this.addClick()
+
+
     }
 
 }
-
-// const customSelect = new CustomSelectWithFloatLabel({
-//     labelText: 'Select a car',
-//     arr: ['volvo', 'audi', 'mersedes', 'BMW', 'GAZ']
-// })
 
 
 window.customElements.define("custom-select-with-float-label", CustomSelectWithFloatLabel);
