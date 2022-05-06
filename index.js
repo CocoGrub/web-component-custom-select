@@ -48,6 +48,7 @@ template.innerHTML = `
     height: 60px;
     margin: 1px 0;
   }
+
   .container label {
     display: block;
     position: absolute;
@@ -57,6 +58,7 @@ template.innerHTML = `
     transition: ease-in 0.2s;
     padding-left: 10px;
   }
+
   .input-select {
     max-width: 100%;
     height: 100%;
@@ -68,10 +70,11 @@ template.innerHTML = `
     background-color: #f3f5f6;
     padding-left: 10px;
   }
+
   .input-select:focus {
     outline: none;
   }
-  
+
   .select-values {
     display: none;
     position: absolute;
@@ -85,24 +88,19 @@ template.innerHTML = `
     box-shadow: 0px 0px 10px 6px #f3f5f6;
     transition: ease-in 0.2s;
   }
-  .select-values-wrapper {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    padding-left: 10px;
-  }
-  
+
   .select-values {
     width: 100%;
   }
-  .select-values-items {
+
+  .item-wrapper {
     padding: 5px;
     cursor: pointer;
     min-height: 30px;
     line-height: 45px;
   }
   
-  .select-values-items:hover {
+  .item-wrapper:hover {
     background-color: #f3f5f6;
   }
   
@@ -118,6 +116,7 @@ template.innerHTML = `
     background-repeat: no-repeat;
     transition: ease-in 0.2s;
   }
+  
   .action-button[data-state="ready"] {
     background-image: url('data:image/svg+xml;base64,${iconExpand}');
   }
@@ -144,32 +143,29 @@ class CustomSelectWithFloatLabel extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true))
 
 
+        // get data from slots and push to array
         const slots = document.querySelectorAll('custom-select-with-float-label .item')
         this.arr = []
         slots.forEach(x => this.arr.push(x.slot))
 
-
         this.labelText = document.querySelector('custom-select-with-float-label .label').slot;
 
+        // create list of items in DOM
         this.wrappedItems = this.arr.forEach((x) => {
             this.el = document.createElement('div')
-            this.elWrapper = document.createElement('div')
             this.el.innerHTML = x;
-            this.el.className = "select-values-items"
-            this.elWrapper.className = "select-values-wrapper"
+            this.el.className = "item-wrapper"
             this.shadowRoot.querySelector('.list-container').appendChild(this.el)
         })
 
         this.input = this.shadowRoot.querySelector('input')
         this.label = this.shadowRoot.querySelector('label')
         this.actionButton = this.shadowRoot.querySelector('.action-button')
-        this.valuesContainer = this.shadowRoot.querySelector('.select-values')
+        this.itemsWrapper = this.shadowRoot.querySelector('.select-values')
         this.itemsContainer = this.shadowRoot.querySelector('.list-container')
-        this.values = this.shadowRoot.querySelectorAll('.select-values-items')
+        this.values = this.shadowRoot.querySelectorAll('.item-wrapper')
         this.labelInitialStyles = this.label.style;
-
         this.label.innerHTML = this.labelText
-
     }
 
 
@@ -178,38 +174,39 @@ class CustomSelectWithFloatLabel extends HTMLElement {
         this.label.style.top = '15%';
     }
 
-
-    addClick() {
-        document.addEventListener('click', (e) => {
+    // hide list of items if cliked away
+    bodyAddClick() {
+        document.body.addEventListener('click', (e) => {
             if (e.target.localName !== 'custom-select-with-float-label') {
-                this.valuesContainer.style = "display:none"
+                this.itemsWrapper.style = "display:none"
                 if (!this.input.value) {
                     this.label.style = this.labelInitialStyles
                 }
             }
         })
     }
-
+    // show list of items
     inputAddClick() {
         this.input.addEventListener('click', () => {
-            this.valuesContainer.style = 'display:block'
+            this.itemsWrapper.style = 'display:block'
             this.backLabelPosition()
         })
     }
+    // add click to every element of list
     valuesAddClick() {
         this.values.forEach(element => {
             element.addEventListener('click', () => {
                 this.input.value = element.innerText
-                this.valuesContainer.style = "display:none"
+                this.itemsWrapper.style = "display:none"
                 this.actionButton.dataset.state = "selected"
             })
         });
     }
-
+    // logic of button in input field
     actionButtonAddClick() {
         this.actionButton.addEventListener('click', () => {
             if (this.actionButton.dataset.state === 'ready') {
-                this.valuesContainer.style = 'display:block'
+                this.itemsWrapper.style = 'display:block'
                 this.input.value = '';
                 this.backLabelPosition()
                 return
@@ -217,21 +214,16 @@ class CustomSelectWithFloatLabel extends HTMLElement {
             this.input.value = '';
             this.actionButton.dataset.state = "ready"
             this.label.style = this.labelInitialStyles;
-            this.valuesContainer.style = 'display:none'
+            this.itemsWrapper.style = 'display:none'
 
         })
     }
-
-
     connectedCallback() {
         this.inputAddClick()
         this.valuesAddClick()
         this.actionButtonAddClick()
-        this.addClick()
-
-
+        this.bodyAddClick()
     }
-
 }
 
 
