@@ -149,6 +149,7 @@ class CustomSelectWithFloatLabel extends HTMLElement {
         slots.forEach(x => this.arr.push(x.slot))
 
         this.labelText = document.querySelector('custom-select-with-float-label .label').slot;
+        this.inputName = document.querySelector('custom-select-with-float-label .inputname').slot;
 
         // create list of items in DOM
         this.wrappedItems = this.arr.forEach((x) => {
@@ -159,6 +160,7 @@ class CustomSelectWithFloatLabel extends HTMLElement {
         })
 
         this.input = this.shadowRoot.querySelector('input')
+        this.input.name = this.inputName
         this.label = this.shadowRoot.querySelector('label')
         this.actionButton = this.shadowRoot.querySelector('.action-button')
         this.itemsWrapper = this.shadowRoot.querySelector('.select-values')
